@@ -19,8 +19,8 @@ fact no_double_booked_seats {
 
 fact unsold_seats {
 	/// 2. It is not necessary that every Seat be covered
-    some s : Seats | no s.who 
-	some p : Patron | no ticket_for
+    some s : Seat | no s.who 
+	some p : Patron | no p.ticket_for
 }
 
 fact atrium_seat_disjoint {
@@ -39,20 +39,23 @@ fact seated_patrons_have_tickets {
 
 	/// 6. Every seated Patron has a ticket_for the Seat the Patron is in 
 	///		 (e.g., is who is in that Seat).
-    all p : patron | one s : Seat  | s.who = p and p.ticket_for = s
+    all p : Patron | one s : Seat  | s.who = p and p.ticket_for = s
 }
 
 //fun ticket_for: Seat -> Patron {~who}
 
 /// 7. returns the set of Seats in which no Patron is sitting
 fun empty : set Seat {
-	all s : Seat | no s.who 
+	Seat - { e : Seat | no e.who}
 }
 
 /// 8. returns the set of Seats for which no ticket has been sold 
 ///     (that is, the Seats no Patron has a ticket_for).
-fun unsold : set Seat {
+/*fun unsold : set Seat {
 	all p : Patron | no p.ticket_for
+}*/
+fun unsold : set Seat {
+	{ s : Seat | s.who in Patron - { u : Patron | no u.ticket_for} }
 }
 
 /// 9. the unsold seats are a subset of the empty seats, 
@@ -62,6 +65,6 @@ assert Consistent {
 	unsold in empty
 }
 
-run Consistent for 8
+check Consistent for 8
 
 
