@@ -29,7 +29,7 @@ fact atrium_seat_disjoint {
 }
 
 /// 3. there may be Patrons who are in neither set
-/// (atrium and seated do not necessarily partition Patron)
+///    (atrium and seated do not necessarily partition Patron)
 
 fact seated_patrons_have_tickets {
     //one t : Theatre | some s : Seat | t.seated.ticket_for = s
@@ -38,7 +38,7 @@ fact seated_patrons_have_tickets {
 	all s : Seat | one t : Theatre | s.who in t.seated
 
 	/// 6. Every seated Patron has a ticket_for the Seat the Patron is in 
-	///		 (e.g., is who is in that Seat).
+	///    (e.g., is who is in that Seat).
     all p : Patron | one s : Seat  | s.who = p and p.ticket_for = s
 }
 
@@ -50,7 +50,7 @@ fun empty : set Seat {
 }
 
 /// 8. returns the set of Seats for which no ticket has been sold 
-///     (that is, the Seats no Patron has a ticket_for).
+///    (that is, the Seats no Patron has a ticket_for).
 /*fun unsold : set Seat {
 	all p : Patron | no p.ticket_for
 }*/
@@ -59,18 +59,18 @@ fun unsold : set Seat {
 }
 
 /// 9. the unsold seats are a subset of the empty seats, 
-///	 	and check this assertion for a universe of (maximum) 
-/// 	size 8 elements in each top-level signature.
+///    and check this assertion for a universe of (maximum) 
+///    size 8 elements in each top-level signature.
 assert Consistent {
 	unsold in empty
 }
 
 /// 9. check this assertion for a universe of (maximum) size 8 
-/// 	 elements in each top-level signature.
+///    elements in each top-level signature.
 check Consistent for 8
 
 /// 10. ensures that some Patrons in the atrium, some Patrons are seated, 
-///		   and some Patrons are in neither set (they're outside the Theater).
+///     and some Patrons are in neither set (they're outside the Theater).
 pred people_can_be_anywhere {
 	some p : Patron | one t : Theatre | p in t.seated
 	some p : Patron | one t : Theatre | p in t.atrium
@@ -81,7 +81,7 @@ pred people_can_be_anywhere {
 }
 
 /// 10. Run this predicate for a universe of (maximum) size 8 
-///  	   elements in each top-level signature
+///  	elements in each top-level signature
 run people_can_be_anywhere for 8 
 
 
