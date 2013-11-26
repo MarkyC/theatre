@@ -65,6 +65,23 @@ assert Consistent {
 	unsold in empty
 }
 
+/// 9. check this assertion for a universe of (maximum) size 8 
+/// 	 elements in each top-level signature.
 check Consistent for 8
+
+/// 10. ensures that some Patrons in the atrium, some Patrons are seated, 
+///		   and some Patrons are in neither set (they're outside the Theater).
+pred people_can_be_anywhere {
+	some p : Patron | one t : Theatre | p in t.seated
+	some p : Patron | one t : Theatre | p in t.atrium
+	some p : Patron | one t : Theatre | p not in t.seated and p not in t.atrium
+
+	no p : Patron | one t : Theatre | p in t.seated and p not in t.seated
+	no p : Patron | one t : Theatre | p in t.atrium and p not in t.atrium
+}
+
+/// 10. Run this predicate for a universe of (maximum) size 8 
+///  	   elements in each top-level signature
+run people_can_be_anywhere for 8 
 
 
