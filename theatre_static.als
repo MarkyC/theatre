@@ -1,3 +1,8 @@
+//CSE 4312 Assignment 1
+//Name: Marco Cirillo
+//Name: Robert Mete
+//Name: Pathmaraj Pathmalingam
+
 sig Seat {
 	/// 4. There is at most one Patron in a given Seat
     who : lone Patron
