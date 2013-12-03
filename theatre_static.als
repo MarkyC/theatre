@@ -35,18 +35,22 @@ fact seated_patrons_have_tickets {
     //one t : Theatre | some s : Seat | t.seated.ticket_for = s
 
 	/// 5. The Patrons in seated are exactly those who are in a Seat.
-	all s : Seat | one t : Theatre | s.who in t.seated
+	//some s : Seat | one t : Theatre | s.who in t.seated
+	one t : Theatre | 	all s : Seat | s.who in t.seated
+	//one t : Theatre | some p : Patron | p in t.seated
 
 	/// 6. Every seated Patron has a ticket_for the Seat the Patron is in 
 	///    (e.g., is who is in that Seat).
-    all p : Patron | one s : Seat  | s.who = p and p.ticket_for = s
+    //all p : Patron | one s : Seat  | s.who = p and p.ticket_for = s
+	one t : Theatre | all p : t.seated | one s : Seat | p.ticket_for = s
 }
 
 //fun ticket_for: Seat -> Patron {~who}
 
 /// 7. returns the set of Seats in which no Patron is sitting
 fun empty : set Seat {
-	Seat - { e : Seat | no e.who}
+//	Seat - { e : Seat | no e.who}
+	{ s : Seat | no s.who }
 }
 
 /// 8. returns the set of Seats for which no ticket has been sold 
@@ -55,7 +59,9 @@ fun empty : set Seat {
 	all p : Patron | no p.ticket_for
 }*/
 fun unsold : set Seat {
-	{ s : Seat | s.who in Patron - { u : Patron | no u.ticket_for} }
+	//{ s : Seat | s.who in Patron - { u : Patron | no u.ticket_for} }
+	//    allSeats - soldSeats
+	{ allSeats : Seat  } - { soldSeat : Seat | one p : Patron | p.ticket_for = soldSeat} 
 }
 
 /// 9. the unsold seats are a subset of the empty seats, 
@@ -72,12 +78,15 @@ check Consistent for 8
 /// 10. ensures that some Patrons in the atrium, some Patrons are seated, 
 ///     and some Patrons are in neither set (they're outside the Theater).
 pred people_can_be_anywhere {
-	some p : Patron | one t : Theatre | p in t.seated
-	some p : Patron | one t : Theatre | p in t.atrium
-	some p : Patron | one t : Theatre | p not in t.seated and p not in t.atrium
+	one t : Theatre | some p : Patron | p in t.seated
+	//one t : Theatre | some p : Patron | p in t.atrium
+	//one t : Theate | some p : Patron | p in t.seated
+	//some p : Patron | one t : Theatre | p in t.seated
+	//some p : Patron | one t : Theatre | p in t.atrium
+	//some p : Patron | one t : Theatre | p not in t.seated and p not in t.atrium
 
-	no p : Patron | one t : Theatre | p in t.seated and p not in t.seated
-	no p : Patron | one t : Theatre | p in t.atrium and p not in t.atrium
+	//no p : Patron | one t : Theatre | p in t.seated and p not in t.seated
+	//no p : Patron | one t : Theatre | p in t.atrium and p not in t.atrium
 }
 
 /// 10. Run this predicate for a universe of (maximum) size 8 
