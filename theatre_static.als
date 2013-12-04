@@ -25,13 +25,13 @@ fact no_double_booked_seats {
 fact unsold_seats {
 	/// 2. It is not necessary that every Seat be covered
     some s : Seat | no s.who 
-	some p : Patron | no p.ticket_for                 //1.)I think this conflicts with rule #1. Every patron needs a ticket.
+	some p : Patron | no p.ticket_for                 //LOOK HERE: 1.)I think this conflicts with rule #1, which is "Every patron needs a ticket"
 }
 
 fact atrium_seat_disjoint {
 	/// 3. The sets of Patrons in the atrium and seated are disjoint
-    one t : Theatre | no (t.atrium & t.seated)  //2.)I think this is saying that patrons cannot be in the atrium or seated....ever. 
-    						//We need to include the cases when they can be in either atrium or seated. Should be 3 cases total.
+    one t : Theatre | no (t.atrium & t.seated)  //LOOK HERE: 2.)I think this is saying that patrons cannot be in the atrium or seated....ever. 
+    						//LOOK HERE: We need to include the cases when they can be in either atrium or seated. Should be 3 cases total.
 }
 
 /// 3. there may be Patrons who are in neither set
@@ -41,7 +41,7 @@ fact seated_patrons_have_tickets {
     //one t : Theatre | some s : Seat | t.seated.ticket_for = s
 
 	/// 5. The Patrons in seated are exactly those who are in a Seat.
-	all s : Seat | one t : Theatre | s.who in t.seated               //3.)should this be s.who == t.seated ?
+	all s : Seat | one t : Theatre | s.who in t.seated               //3.)LOOK HERE: should this be s.who == t.seated ?
 
 	/// 6. Every seated Patron has a ticket_for the Seat the Patron is in 
 	///    (e.g., is who is in that Seat).
