@@ -25,7 +25,7 @@ fact no_double_booked_seats {
 fact unsold_seats {
 	/// 2. It is not necessary that every Seat be covered
     some s : Seat | no s.who 
-	//some p : Patron | no p.ticket_for          
+	some p : Patron | no p.ticket_for          
 }
 
 fact atrium_seat_disjoint {
@@ -49,8 +49,6 @@ fact seated_patrons_have_tickets {
 	///    (e.g., is who is in that Seat).
 	one t : Theatre | 	all p : t.seated | one s : Seat | p.ticket_for = s
 }
-
-//fun ticket_for: Seat -> Patron {~who}
 
 /// 7. returns the set of Seats in which no Patron is sitting
 fun empty : set Seat {
@@ -76,7 +74,7 @@ check Consistent for 8
 
 /// 10. ensures that some Patrons in the atrium, some Patrons are seated, 
 ///     and some Patrons are in neither set (they're outside the Theater).
-pred people_can_be_anywhere {
+pred RealTheatre {
 
 	one t : Theatre | all p : t.seated | p not in t.atrium
 	one t : Theatre | all p : t.atrium | p not in t.seated
@@ -86,6 +84,6 @@ pred people_can_be_anywhere {
 
 /// 10. Run this predicate for a universe of (maximum) size 8 
 ///  	elements in each top-level signature
-run people_can_be_anywhere for 8 
+run RealTheatre for 8 
 
 
