@@ -40,12 +40,12 @@ pred trade_coach [t1 : Team, t1r : set Coach, t2 : Team, t2r : set Coach, st : S
         t1r in t1.coach.st // can only trade a coach you have on your team
         t2r in t2.coach.st // same as above
         t1 != t2 // not the same team for trade
-        #t1r = 1 // only 1 coach should be in the trade deal
+        #t1r = 2 // only 2 coachesshould be in the trade deal
 
         // post-condition
         let st_prime = st.next {
-                t1.coach.st_prime = t1.coach.st - t1r + t2r // t1's new coach
-                t2.coach.st_prime = t2.coach.st - t2r + t1r // t2's new coach
+                t1.coach.st_prime = t2.coach.st  // t1's new coach
+                t2.coach.st_prime = t1.coach.st  // t2's new coach
         }
 
         // frame - if a team is not involved in the trade, the roster remains the same
